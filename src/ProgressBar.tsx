@@ -136,11 +136,25 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
       variant,
       className,
       children,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
       ...wrapperProps
     } = props;
 
+    // When rendering a single bar, the accessible name belongs on the
+    // element with role="progressbar", not on the wrapper. Stacked bars
+    // receive their own aria props directly.
+    const ariaProps = children
+      ? { 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy }
+      : {};
+
     return (
-      <div ref={ref} {...wrapperProps} className={clsx(className, bsPrefix)}>
+      <div
+        ref={ref}
+        {...wrapperProps}
+        {...ariaProps}
+        className={clsx(className, bsPrefix)}
+      >
         {children
           ? map(children, (child) => cloneElement(child, { isChild: true }))
           : renderProgressBar(
@@ -154,6 +168,8 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
                 animated,
                 bsPrefix,
                 variant,
+                'aria-label': ariaLabel,
+                'aria-labelledby': ariaLabelledBy,
               },
               ref,
             )}

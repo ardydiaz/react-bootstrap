@@ -141,6 +141,52 @@ describe('<ProgressBar>', () => {
     ).toContain('special-label');
   });
 
+  it('Should apply aria-label to the progressbar element', () => {
+    render(
+      <ProgressBar data-testid="test" now={50} aria-label="Upload progress" />,
+    );
+    const progressElem = screen.getByTestId('test');
+
+    expect(progressElem.hasAttribute('aria-label')).toBe(false);
+    expect(
+      screen.getByRole('progressbar', { name: 'Upload progress' }),
+    ).toBeTruthy();
+  });
+
+  it('Should apply aria-labelledby to the progressbar element', () => {
+    render(
+      <>
+        <h2 id="progress-heading">Download status</h2>
+        <ProgressBar
+          data-testid="test"
+          now={50}
+          aria-labelledby="progress-heading"
+        />
+      </>,
+    );
+    const progressElem = screen.getByTestId('test');
+
+    expect(progressElem.hasAttribute('aria-labelledby')).toBe(false);
+    expect(
+      screen.getByRole('progressbar', { name: 'Download status' }),
+    ).toBeTruthy();
+  });
+
+  it('Should keep aria-label on each bar when stacked', () => {
+    render(
+      <ProgressBar data-testid="test" aria-label="Storage usage">
+        <ProgressBar now={50} aria-label="Photos" />
+        <ProgressBar now={30} aria-label="Videos" />
+      </ProgressBar>,
+    );
+
+    expect(screen.getByTestId('test').getAttribute('aria-label')).toEqual(
+      'Storage usage',
+    );
+    expect(screen.getByRole('progressbar', { name: 'Photos' })).toBeTruthy();
+    expect(screen.getByRole('progressbar', { name: 'Videos' })).toBeTruthy();
+  });
+
   it('Should show striped bar', () => {
     render(<ProgressBar data-testid="test" min={1} max={11} now={6} striped />);
     const innerProgressElem = screen.getByTestId('test').firstElementChild!;

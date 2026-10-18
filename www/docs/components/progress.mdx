@@ -3,6 +3,7 @@ title: Progress bars
 description: Provide up-to-date feedback on the progress of a workflow or action with simple yet flexible progress bars.
 ---
 
+import ProgressBarAccessibleName from '!!raw-loader!../examples/ProgressBar/AccessibleName';
 import ProgressBarAnimated from '!!raw-loader!../examples/ProgressBar/Animated';
 import ProgressBarBasic from '!!raw-loader!../examples/ProgressBar/Basic';
 import ProgressBarContextual from '!!raw-loader!../examples/ProgressBar/Contextual';
@@ -35,6 +36,16 @@ Add a `visuallyHidden` prop to hide the label visually.
 
 <CodeBlock language="jsx" live>
   {ProgressBarScreenreaderLabel}
+</CodeBlock>
+
+## Accessible name
+
+Give the progress bar an accessible name with `aria-label` or
+`aria-labelledby`. These are applied to the element with
+`role="progressbar"` so assistive technologies can announce it.
+
+<CodeBlock language="jsx" live>
+  {ProgressBarAccessibleName}
 </CodeBlock>
 
 ## Contextual alternatives
